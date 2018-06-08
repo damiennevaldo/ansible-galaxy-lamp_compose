@@ -1,0 +1,10 @@
+---
+# defaults file for lamp_compose:
+repertoire_projet: /opt
+database: wordpress
+user: wordpress
+password: secret
+
+apache: 80
+mariadb: 3306
+phpmyadmin: 8080 

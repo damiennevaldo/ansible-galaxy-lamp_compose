@@ -1,0 +1,5 @@
+---
+- hosts: ubuntu-damien.local 
+#  remote_user: root
+  roles:
+    - lamp_compose

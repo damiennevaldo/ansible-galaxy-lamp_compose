@@ -1,0 +1,39 @@
+---
+# tasks file for lamp_compose
+- name: telecharge et desarchive wordpress
+  unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    dest: "{{repertoire_projet}}"
+    remote_src: yes
+    owner: 1000 
+    group: 1000
+
+- name: execute le docker_compose
+  docker_service:
+    project_name: lamp_compose
+    definition:
+      version: "2"
+      services:
+        apache:
+          image: webdevops/php-apache:centos-7
+          ports:
+            - "{{apache}}:80"
+          volumes:
+            - "{{repertoire_projet}}/wordpress:/app"
+          links:
+            - mariadb:db
+        mariadb:
+          image: centos/mariadb-101-centos7
+          ports:
+            - "{{mariadb}}:3306"
+          environment:
+            - MYSQL_DATABASE={{database}}
+            - MYSQL_USER={{user}}
+            - MYSQL_PASSWORD={{password}}
+        phpmyadmin:
+          image: phpmyadmin/phpmyadmin
+          ports:
+            - "{{phpmyadmin}}:80"
+          links: 
+            - mariadb:db 
+
